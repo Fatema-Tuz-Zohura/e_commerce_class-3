@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+
+
 
 class AuthController extends Controller
 {
@@ -32,9 +35,11 @@ class AuthController extends Controller
 
     	 try{
 
-    	 	User::create($inputs);
+    	 	 $user= User::create($inputs);
 
-    	 	session()->flash('message', 'your account is successfully registered.');
+             event(new Registered($user));
+
+    	 	session()->flash('massage', 'your account is successfully registered.Thank you.');
 
 
     	 	return redirect()->route('login');
@@ -43,7 +48,7 @@ class AuthController extends Controller
     	 catch(Exception $e){
 
 
-    	 	session()->flash('message', $e->getMessage());
+    	 	session()->flash('massage', $e->getMessage());
 				return redirect()->back();
 }
 
@@ -72,11 +77,25 @@ class AuthController extends Controller
      $login_array = $rr->except(['_token']);
 
      if (auth()->attempt($login_array)) {
-     	
-     		return redirect()->route('register');
+
+        auth()->user();
+
+        return redirect()->route('dashboard');
+
+
      }
 
-     	session()->flash('message', 'Sry try again.');
+     	session()->flash('massage', 'Sry try again.');
      	return redirect()->back();
+    }
+
+    public function Logout(){
+
+        auth()->Logout();
+
+        session()->flash('massage', 'your account is successfully logout.Thank you.');
+return redirect()->route('login');
+
+
     }
 }

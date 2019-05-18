@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ResetPasswordController extends Controller
 {
@@ -25,7 +27,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -36,4 +38,21 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+
+    public function showResetForm(Request $request, $token = null)
+    {
+
+
+        $data = [];
+        $data['hero'] = false;
+        $data['categories'] = Category::select('name','slug')->get();
+
+        return view('reset',$data)->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+
+
 }

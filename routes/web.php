@@ -11,6 +11,8 @@
 |
 */
 
+Auth::routes(['verify'=>true]);
+
 Route::get('/', 'HomeController@showWelcome')->name('home');
 
 Route::get('/register', 'AuthController@showRegisterForm')->name('register');
@@ -20,6 +22,23 @@ Route::post('/register', 'AuthController@register');
 Route::get('/login', 'AuthController@showLoginForm')->name('login');
 
 Route::post('/login', 'AuthController@login');
+
+
+Route::group(['middleware'=>'auth'], function(){
+
+Route::get('/logout', 'AuthController@Logout')->name('logout');
+
+Route::group(['middleware'=> 'verified'], function(){
+Route::get('/dashboard', 'DashboardController@showDashboard')->name('dashboard');
+
+
+});
+
+
+
+
+
+});
 
 Route::get('/category/{slug}', 'HomeController@showCategory')->name('category.products');	
 

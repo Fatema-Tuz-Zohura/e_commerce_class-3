@@ -2,6 +2,14 @@
 
 @section('content')
 
+
+<div class="jumbotron bg-success my-4">
+<div class="row">
+
+  <div class="col-md-6">
+    
+  
+
 	
 @if($errors->any())
 
@@ -34,7 +42,8 @@
 @endif
 
 
-<div class="row">
+
+
   <form action="{{ route('login') }}" method="post">
 
           @csrf
@@ -57,5 +66,21 @@
             <button type="submit" class="btn btn-primary">login</button>
 
           </form>
-    </div>
+ 
+     </div>
+ 
+  </div>
+</div>
+  
+
+          <a class="btn btn-link" href="{{ route('password.request') }}">
+
+            {{__('Forgot Your Password?')}}
+            
+          </a>
+
+          </div>
+
+
+   
 @stop
